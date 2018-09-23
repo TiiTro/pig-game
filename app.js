@@ -22,19 +22,34 @@ document.getElementById('score-1').textContent = '0';
 document.getElementById('current-0').textContent = '0';
 document.getElementById('current-1').textContent = '0';
 
+// Event listener for rolling the dice
 document.querySelector('.btn-roll').addEventListener('click', function() {
 
-  // 1. Random number
+  // 1. Generating a random number
   var dice = Math.floor(Math.random() * 6) + 1;
 
-  // 2. Display the result
+  // 2. Displaying the result
   var diceDOM = document.querySelector('.dice');
   diceDOM.style.display = 'block';
   diceDOM.src = 'dice-' + dice + '.png';
 
-  // 3. Update the round score IF the rolled number is not 1
-});
+  // 3. Updating the round score IF the rolled number is not 1
+  if (dice !== 1) {
+    // Add score
+    roundScore += dice;
+    document.querySelector('#current-' + activePlayer).textContent = roundScore;
 
-//dice = Math.floor(Math.random() * 6) + 1;
-//console.log(dice);
-//document.querySelector('#current-0').textContent = dice;
+  } else {
+    // Next player
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    // Setting score back to 0
+    roundScore = 0;
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
+    // changing the active palyer visuals accordingly by adding class 'active'
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+    //hiding the dice
+    document.querySelector('.dice').style.display = 'none';
+  }
+});
