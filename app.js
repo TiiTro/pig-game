@@ -41,15 +41,46 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 
   } else {
     // Next player
-    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-    // Setting score back to 0
-    roundScore = 0;
-    document.getElementById('current-0').textContent = '0';
-    document.getElementById('current-1').textContent = '0';
-    // changing the active palyer visuals accordingly by adding class 'active'
-    document.querySelector('.player-0-panel').classList.toggle('active');
-    document.querySelector('.player-1-panel').classList.toggle('active');
-    //hiding the dice
-    document.querySelector('.dice').style.display = 'none';
+    nextPlayer();
   }
 });
+
+
+// Holding the score
+document.querySelector('.btn-hold').addEventListener('click', function() {
+
+  // Adding CURRENT score to global score
+  scores[activePlayer] += roundScore;
+
+  // Update the UI
+  document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+
+  //Check if player won the game
+  if (scores[activePlayer] >= 100) {
+    document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
+    document.querySelector('.dice').style.display = 'none';
+    document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
+    document.querySelector('.player-' + activePlayer + '-panel').classList.add('active');
+  } else {
+    nextPlayer();
+  };
+
+  // Next player
+  nextPlayer();
+
+});
+
+// nextPlayer function for re-usable player-change function
+function nextPlayer() {
+  // Next player
+  activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+  // Setting score back to 0
+  roundScore = 0;
+  document.getElementById('current-0').textContent = '0';
+  document.getElementById('current-1').textContent = '0';
+  // changing the active palyer visuals accordingly by adding class 'active'
+  document.querySelector('.player-0-panel').classList.toggle('active');
+  document.querySelector('.player-1-panel').classList.toggle('active');
+  //hiding the dice
+  document.querySelector('.dice').style.display = 'none';
+}
